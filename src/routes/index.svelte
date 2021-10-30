@@ -1,19 +1,27 @@
 <script>
-    async function getData() {
-        const res = await fetch(`http://localhost:3000/topics.json`);
-        const data = await res.json();
-        return data;
-    }
+    const baseUrl = "http://localhost:3000";
+    let topics = [];
 
-    getData();
+   async function getTopics() {
+       const res = await fetch (`${baseUrl}/topics.json`);
+       const data = await res.json();
+       topics = data.topics;
+   }
+   getTopics();
+
+   async function handleVote(id) {
+       await fetch (`${baseUrl}/topics`, {
+           method : "PATCH",
+           body: JSON.stringify({id})
+       });
+   }
 </script>
-
 
 <h1>Vote Topik Livestreaming</h1>
 
 <ul>
-    <li><div>HTML<button>Vote(10)</button></div></li>
-    <li><div>CSS<button>Vote(20)</button></div></li>
-    <li><div>Javascript<button>Vote(30)</button></div></li>
+    {#each topics as topic}
+        <li><div>{topic.title}<button on:click={()=> handleVote(topic.id)}>Vote({topic.vote})</button></div></li>
+    {/each}
 </ul>
 
