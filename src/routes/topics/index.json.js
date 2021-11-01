@@ -17,10 +17,14 @@ export async function get() {
 
 export async function path({ body }) {
 	const data = JSON.parse(body);
-	const topic = topics.find(function (t) {
-		return t.id === parseInt(data.id);
+	const updatedTopic = topics.find(function (topic) {
+		return topic.id === parseInt(data.id);
 	});
-	topic.vote += 1;
+	updatedTopic.vote += 1;
+	topics = topics.filter(function (topic) {
+		return topic.id !== updatedTopic.id;
+	});
+	topics.push(updatedTopic);
 	return {
 		body: {
 			status: 'OK',

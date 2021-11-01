@@ -2,6 +2,10 @@
     const baseUrl = "http://localhost:3000";
     let topics = [];
 
+    $: topics.sort(function(a, b) {
+        return b.vote - a.vote;
+    });
+
    async function getTopics() {
        const res = await fetch (`${baseUrl}/topics.json`);
        const data = await res.json();
@@ -10,10 +14,12 @@
    getTopics();
 
    async function handleVote(id) {
-       await fetch (`${baseUrl}/topics`, {
+       const res = await fetch (`${baseUrl}/topics`, {
            method : "PATCH",
-           body: JSON.stringify({id})
+           body: JSON.stringify({id: id})
        });
+       const data = res.json();
+       topics = data.topics;
    }
 </script>
 
