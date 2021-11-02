@@ -7,7 +7,7 @@
     });
 
    async function getTopics() {
-       const res = await fetch (`${baseUrl}/topics.json`);
+       const res = await fetch (`${baseUrl}/topics`);
        const data = await res.json();
        topics = data.topics;
    }
@@ -15,10 +15,11 @@
 
    async function handleVote(id) {
        const res = await fetch (`${baseUrl}/topics`, {
-           method : "PATCH",
+           method : 'PATCH',
            body: JSON.stringify({id: id})
        });
-       const data = res.json();
+       getTopics();
+       const data = await res.json();
        topics = data.topics;
    }
 </script>
@@ -27,7 +28,7 @@
 
 <ul>
     {#each topics as topic}
-        <li><div>{topic.title}<button on:click={()=> handleVote(topic.id)}>Vote({topic.vote})</button></div></li>
+        <li><div>{topic.title}<button on:click={()=>handleVote(topic.id)}>Vote({topic.vote})</button></div></li>
     {/each}
 </ul>
 

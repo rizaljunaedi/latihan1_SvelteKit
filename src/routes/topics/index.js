@@ -15,7 +15,7 @@ export async function get() {
 	};
 }
 
-export async function path({ body }) {
+export async function patch({ body }) {
 	const data = JSON.parse(body);
 	const updatedTopic = topics.find(function (topic) {
 		return topic.id === parseInt(data.id);
